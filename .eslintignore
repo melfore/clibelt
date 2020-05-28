@@ -1,0 +1,9 @@
+# ignored paths
+/.yalc/*
+/.pnp/*
+/build/*
+/coverage/*
+# /dist/*
+/logs/*
+/docs/*
+/node_modules/*

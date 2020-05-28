@@ -1,0 +1,13 @@
+{
+  "env": {
+    "browser": false,
+    "node": true,
+    "es6": true,
+    "es2020": true
+  },
+  "extends": ["prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": ["error"]
+  }
+}
