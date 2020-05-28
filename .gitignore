@@ -21,3 +21,4 @@ yarn-error.log*
 /logs/
 
 /test/out/*.json
+/test/out/*.ts
