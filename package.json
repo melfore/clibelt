@@ -29,7 +29,8 @@
     "lintify": "eslint .",
     "prettify": "prettier --write .",
     "preversion": "npm run lintify",
-    "version": "npm run prettify"
+    "version": "npm run prettify",
+    "upload": "npm run build && npm publish --access public"
   },
   "dependencies": {
     "convict": "^6.0.0",
