@@ -3,8 +3,7 @@
 
 import fs from "fs";
 import path from "path";
-import os from "os";
-// import prettier from "prettier";
+import os, { EOL } from "os";
 import config from "../../config";
 
 export const CLI_NAME = "i18nMsg";
@@ -25,6 +24,11 @@ interface OutputMessages {
 
 interface OutputMessagesAllLangs {
   [lang: string]: OutputMessages;
+}
+
+interface MessagesNamespace extends Array<string | Message[]> {
+  0: string;
+  1: Message[];
 }
 
 //
@@ -49,7 +53,6 @@ const writeObjJson = (filename: string, obj: object) => {
   switch (EXT) {
     case "js":
       data = `exports.messages = ${JSON.stringify(obj, null, 2)};`;
-      // data = `exports.messages = ${JSON.stringify(obj)};`;
       break;
     case "json":
       data = JSON.stringify(obj, null, 2);
@@ -75,11 +78,9 @@ const tsName = (code: string): string => {
 
 // writes a typescript source that exports translation codes as constants
 const writeTs = (filename: string, messages: Message[]) => {
-  const EOL = os.EOL;
-  let output: string = "";
-  messages.map((msg) => {
-    output += `export const ${tsName(msg.code)} = "${msg.code}";${EOL}`;
-  });
+  const output: string = messages.reduce((result, msg) => {
+    return result + `export const ${tsName(msg.code)} = "${msg.code}";${EOL}`;
+  }, "");
 
   fs.writeFile(filename, output, (err) => {
     if (err) console.log(err);
@@ -89,16 +90,19 @@ const writeTs = (filename: string, messages: Message[]) => {
 
 // writes translations for each language
 // writes temporary sorted file with all languages
-const splitMessages = () => {
-  const messages: Message[] = mal.messages;
-  const sortedMessages = messages.sort((a, b) => a.code.localeCompare(b.code));
-  writeObjJson(`${outMsgDir}/messages-sort-temp.${EXT}`, sortedMessages);
+// if namespace param is set use it as filename and write files in different folder for each language
 
-  writeTs(outTsFile, sortedMessages);
+const splitMessages = (messages: Message[], namespace?: string) => {
+  const sortedMessages = messages.sort((a, b) => a.code.localeCompare(b.code));
+  const sortedName = namespace ? `${namespace}-sort-temp` : "messages-sort-temp";
+  const tsFile = namespace ? `${outMsgDir}/${namespace}.ts` : outTsFile;
+
+  writeObjJson(`${outMsgDir}/${sortedName}.${EXT}`, sortedMessages);
+  writeTs(tsFile, sortedMessages);
 
   const res: OutputMessagesAllLangs = {};
-  sortedMessages.map((k) => {
-    k.tr.map((t) => {
+  sortedMessages.forEach((k) => {
+    k.tr.forEach((t) => {
       if (!res[t.l]) {
         res[t.l] = {};
       }
@@ -107,9 +111,40 @@ const splitMessages = () => {
   });
 
   Object.keys(res).map((n) => {
-    writeObjJson(`${outMsgDir}/${n}.${EXT}`, res[n]);
+    const dest = namespace ? `${outMsgDir}/${n}/${namespace}.${EXT}` : `${outMsgDir}/${n}.${EXT}`;
+    const langDir = path.dirname(dest);
+
+    fs.mkdirSync(langDir, { recursive: true });
+    writeObjJson(dest, res[n]);
   });
 };
 
+const writeNamespacesFile = (namespaces: MessagesNamespace[]) => {
+  const content = namespaces.reduce((result, [ns]) => {
+    return result + `export * from './${ns}';${EOL}`;
+  }, "");
+
+  fs.writeFile(outTsFile, content, (err) => {
+    if (err) {
+      console.log("Error writing to", outTsFile);
+    }
+  });
+};
+
+const checkNamespaces = () => {
+  fs.mkdirSync(outMsgDir, { recursive: true });
+
+  const namespaces: MessagesNamespace[] = mal.namespaces ? Object.entries(mal.namespaces) : [];
+
+  if (namespaces.length > 0) {
+    namespaces.forEach(([ns, messages]) => {
+      splitMessages(messages, ns);
+    });
+    writeNamespacesFile(namespaces);
+  } else {
+    splitMessages(mal.messages);
+  }
+};
+
 // main
-splitMessages();
+checkNamespaces();
