@@ -59,7 +59,7 @@ jobs:
           git commit -m "Release Ops" -a
 
       - name: Increase Version
-        run: npm version patch
+        run: npm version major -m "breaking changes (namespaces support) + packages update + node 16 + crypto-js dependencies remove"
 
       - name: Push Updates
         uses: ad-m/github-push-action@master
