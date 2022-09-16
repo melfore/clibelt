@@ -14,6 +14,13 @@ export default {
       arg: "i18n-out-msg",
       env: "I18N_OUT_MSG",
     },
+    outTemp: {
+      doc: "sorted messages directory",
+      format: String,
+      default: "./src/messages/temp",
+      arg: "i18n-out-temp",
+      env: "I18N_OUT_TEMP",
+    },
     outTs: {
       doc: "TypeScript source output directory",
       format: String,

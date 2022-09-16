@@ -2,6 +2,7 @@
   "i18nMsg": {
     "input": "./test/resources/messages-all-langs",
     "outMsg": "./test/out",
+    "outTemp": "./test/out/temp",
     "outTs": "./test/out/i18nMessages.ts"
   }
 }
