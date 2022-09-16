@@ -19,7 +19,7 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@master
         with:
-          node-version: 12
+          node-version: 16
           registry-url: https://registry.npmjs.org/
 
       - name: Cache Dependencies
@@ -40,7 +40,7 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "github-actions[bot]"
           git pull
-          
+
       - name: Unit Tests
         run: npm test
         env:
@@ -59,8 +59,8 @@ jobs:
           git commit -m "Release Ops" -a
 
       - name: Increase Version
-        run: npm version patch
-        
+        run: npm version major -m "breaking changes (namespaces support) + packages update + node 16 + crypto-js dependencies remove"
+
       - name: Push Updates
         uses: ad-m/github-push-action@master
         with:

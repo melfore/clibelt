@@ -1,14 +1,11 @@
-// "pwd2hash": "node ./utils/pwd2hash"
-import CryptoJS from "crypto-js";
+import { createHash } from "crypto";
 
 export const genMD5Enc = (str: string) => {
   if (!str) {
     return "";
   }
-  const hash = CryptoJS.MD5(str);
 
-  // const hashEnc = hash.toString(CryptoJS.enc.Base64);
-  const hashEnc = hash.toString(CryptoJS.enc.Hex);
+  const hashEnc = createHash("md5").update(str).digest("hex");
 
   return hashEnc;
 };

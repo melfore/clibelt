@@ -15,6 +15,10 @@
     "pwd2hash": "dist/cli/pwd2hash/index.js",
     "i18n-msg": "dist/cli/i18n-msg/index.js"
   },
+  "engines": {
+    "node": ">=16 <17",
+    "npm": ">=8 <9"
+  },
   "scripts": {
     "build2": "tsc -p .",
     "build": "npm run prettify && tsc -p . && npm run copy:assets",
@@ -23,9 +27,8 @@
     "copy:assets": "copyfiles --verbose ./src/**/*.{json,png,jpg,svg,xls,xlsx} ./dist/",
     "republish": "npm run build:clean && yalc push",
     "test:i18n": "rm -f test/out/*.json test/out/*.ts && nodemon --watch 'src/**/*.ts' --watch '.clibelt.json' --exec 'ts-node' src/cli/i18n-msg/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 0",
-    "TODOtest": "jest --config jest.config.js --testTimeout=10000",
-    "TODOtest:watch": "jest --config jest.config.js --watch --detectOpenHandles",
+    "test": "jest --config jest.config.js --runInBand",
+    "test:watch": "jest --config jest.config.js --watch --detectOpenHandles",
     "lintify": "eslint .",
     "prettify": "prettier --write .",
     "preversion": "npm run lintify",
@@ -33,29 +36,27 @@
     "upload": "npm run build && npm publish --access public"
   },
   "dependencies": {
-    "convict": "^6.0.0",
-    "convict-format-with-moment": "^6.0.0",
-    "crypto-js": "^4.0.0",
-    "validator": "^13.0.0",
-    "prettier": "^2.0.5"
+    "convict": "^6.2.3",
+    "convict-format-with-moment": "^6.2.0",
+    "validator": "^13.7.0",
+    "prettier": "^2.7.1"
   },
   "devDependencies": {
-    "@types/convict": "^5.2.1",
-    "@types/crypto-js": "^3.1.47",
-    "@types/jest": "^25.2.2",
-    "@types/node": "^14.0.5",
-    "@types/validator": "^13.0.0",
-    "copyfiles": "^2.2.0",
-    "eslint": "^7.0.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jest": "^23.13.0",
-    "eslint-plugin-prettier": "^3.1.3",
-    "jest": "^26.0.1",
-    "nodemon": "^2.0.4",
-    "ts-jest": "^26.0.0",
-    "ts-node": "^8.10.1",
-    "typescript": "^3.9.3"
+    "@types/convict": "^6.1.1",
+    "@types/jest": "^29.0.2",
+    "@types/node": "^18.7.18",
+    "@types/validator": "^13.7.6",
+    "copyfiles": "^2.4.1",
+    "eslint": "^8.23.1",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^27.0.4",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.0.3",
+    "nodemon": "^2.0.19",
+    "ts-jest": "^29.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.3"
   },
   "license": "MIT"
 }

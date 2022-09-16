@@ -1,3 +1,5 @@
+import path from "path";
+
 //
 // CLIs configuration
 //
@@ -10,11 +12,10 @@
 // Note: convict philosophy is to have production values be the default values.
 //
 import convict, { ValidateOptions } from "convict";
-const convict_format_with_moment = require("convict-format-with-moment");
-import path from "path";
 
-import validators from "./config-validators";
 import schema from "./config-schema";
+import validators from "./config-validators";
+const convict_format_with_moment = require("convict-format-with-moment");
 
 // Any properties specified in config files that are not declared in the schema will print a warning (default)
 const VALIDATE_WARN: ValidateOptions = { allowed: "warn" };
@@ -34,6 +35,9 @@ config.validate(VALIDATE_WARN);
 
 // Example:
 //    const input = get(CLI_NAME)("input");
-export const getProp = (cliName: string) => (param: string) => config.get(`${cliName}.${param}`);
+// export const getProp = (cliName: string) => (param: string) => config.get(`${cliName}.${param}`);
 
-export default { ...config, getProp };
+// export default { ...config, getProp };
+
+export { config };
+export default config;
