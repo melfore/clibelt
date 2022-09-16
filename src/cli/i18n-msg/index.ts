@@ -39,6 +39,7 @@ const mal = require(inputFile); // FIXME
 
 const outMsgDir = path.join(process.cwd(), config.get(CLI_NAME).outMsg);
 const outTsFile = path.join(process.cwd(), config.get(CLI_NAME).outTs);
+const outTsDir = path.dirname(outTsFile);
 
 const EXT: string = "json";
 
@@ -95,7 +96,7 @@ const writeTs = (filename: string, messages: Message[]) => {
 const splitMessages = (messages: Message[], namespace?: string) => {
   const sortedMessages = messages.sort((a, b) => a.code.localeCompare(b.code));
   const sortedName = namespace ? `${namespace}-sort-temp` : "messages-sort-temp";
-  const tsFile = namespace ? `${outMsgDir}/${namespace}.ts` : outTsFile;
+  const tsFile = namespace ? `${outTsDir}/${namespace}.ts` : outTsFile;
 
   writeObjJson(`${outMsgDir}/${sortedName}.${EXT}`, sortedMessages);
   writeTs(tsFile, sortedMessages);
@@ -133,6 +134,7 @@ const writeNamespacesFile = (namespaces: MessagesNamespace[]) => {
 
 const checkNamespaces = () => {
   fs.mkdirSync(outMsgDir, { recursive: true });
+  fs.mkdirSync(outTsDir, { recursive: true });
 
   const namespaces: MessagesNamespace[] = mal.namespaces ? Object.entries(mal.namespaces) : [];
 
