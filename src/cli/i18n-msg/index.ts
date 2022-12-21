@@ -13,9 +13,15 @@ interface Translation {
   v: string;
 }
 
+interface CustomerOverride {
+  customer: string;
+  tr: Translation[];
+}
+
 interface Message {
   code: string;
   tr: Translation[];
+  overrides?: CustomerOverride[];
 }
 
 interface OutputMessages {
@@ -95,6 +101,22 @@ const writeTs = (filename: string, messages: Message[]) => {
   });
 };
 
+const writeKeys = (key: string, translations: Translation[], output: OutputMessagesAllLangs) => {
+  translations.forEach((t) => {
+    if (!output[t.l]) {
+      output[t.l] = {};
+    }
+    output[t.l][key] = t.v;
+  });
+};
+
+const writeFiles = (language: string, translations: OutputMessagesAllLangs, dest: string) => {
+  const langDir = path.dirname(dest);
+
+  fs.mkdirSync(langDir, { recursive: true });
+  writeObjJson(dest, translations[language]);
+};
+
 // writes translations for each language
 // writes temporary sorted file with all languages
 // if namespace param is set use it as filename and write files in different folder for each language
@@ -108,21 +130,33 @@ const splitMessages = (messages: Message[], namespace?: string) => {
   writeTs(tsFile, sortedMessages);
 
   const res: OutputMessagesAllLangs = {};
+  const overrides: { [customer: string]: OutputMessagesAllLangs } = {};
+
   sortedMessages.forEach((k) => {
-    k.tr.forEach((t) => {
-      if (!res[t.l]) {
-        res[t.l] = {};
+    writeKeys(k.code, k.tr, res);
+
+    k.overrides?.forEach((override) => {
+      if (!overrides[override.customer]) {
+        overrides[override.customer] = {};
       }
-      res[t.l][k.code] = t.v;
+
+      writeKeys(k.code, override.tr, overrides[override.customer]);
     });
   });
 
   Object.keys(res).map((n) => {
     const dest = namespace ? `${outMsgDir}/${n}/${namespace}.${EXT}` : `${outMsgDir}/${n}.${EXT}`;
-    const langDir = path.dirname(dest);
+    writeFiles(n, res, dest);
+  });
 
-    fs.mkdirSync(langDir, { recursive: true });
-    writeObjJson(dest, res[n]);
+  Object.keys(overrides).map((customer) => {
+    Object.keys(overrides[customer]).map((n) => {
+      const dest = namespace
+        ? `${outMsgDir}/${n}/${customer}-${namespace}.${EXT}`
+        : `${outMsgDir}/${customer}-${n}.${EXT}`;
+
+      writeFiles(n, overrides[customer], dest);
+    });
   });
 };
 
