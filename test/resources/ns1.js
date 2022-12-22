@@ -11,6 +11,34 @@ module.exports = [
         v: "Accesso negato. Controllare le credenziali e riprovare",
       },
     ],
+    overrides: [
+      {
+        customer: "c1",
+        tr: [
+          {
+            l: "en",
+            v: "Access denied C1",
+          },
+          {
+            l: "it",
+            v: "Accesso negato C1",
+          },
+        ],
+      },
+      {
+        customer: "c2",
+        tr: [
+          {
+            l: "en",
+            v: "Access denied C2",
+          },
+          {
+            l: "it",
+            v: "Accesso negato C2",
+          },
+        ],
+      },
+    ],
   },
   {
     code: "http.error.code.400",

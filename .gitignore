@@ -20,5 +20,5 @@ yarn-error.log*
 /.vscode/
 /logs/
 
-/test/out/*.json
-/test/out/*.ts
+/test/out/**/*.json
+/test/out/**/*.ts
