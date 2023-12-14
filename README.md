@@ -99,3 +99,4 @@ No configuration is required, just add to `package.json` script and run:
 ```shell
 npm run pwd2hash string_to_hash
 ```
+test
