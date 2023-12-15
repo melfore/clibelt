@@ -177,67 +177,78 @@ const writeNamespacesFile = (namespaces: MessagesNamespace[]) => {
   });
 };
 
-const allLanguagesReport = (data: Message[], languages: string[])=>{
-  data.forEach((value)=>{
-    value.tr.forEach((i)=>{
-      languages.push(i.l)
-    })
-    if(value.overrides){
-      value.overrides.forEach((i)=>{
-        i.tr.forEach((v)=>{
-          languages.push(v.l)
-        })
-      })
+const allLanguagesReport = (data: Message[], languages: string[]) => {
+  data.forEach((value) => {
+    value.tr.forEach((i) => {
+      languages.push(i.l);
+    });
+    if (value.overrides) {
+      value.overrides.forEach((i) => {
+        i.tr.forEach((v) => {
+          languages.push(v.l);
+        });
+      });
     }
-  })
-}
+  });
+};
 
-const report = (data: Message[], languages:string[])=>{
-  data.forEach((value)=>{
-    let valueLanguages: string[] = []
-    let valueLanguagesOverrites: string[] = []
-    value.tr.forEach((i)=>{
-      valueLanguages.push(i.l)
-    })
-    value.overrides?.forEach((i)=>{
-      i.tr.forEach((value)=>{
-        valueLanguagesOverrites.push(value.l)
-      })
-      const differentArrOverrides = languages.filter(x => !valueLanguagesOverrites.includes(x))
-      if(differentArrOverrides[0]){
-        console.log("    Code: ",("\x1b[31m" + value.code + "\x1b[0m")," Customer: ",("\x1b[31m" + i.customer + "\x1b[0m")," is missing the following languages: ", differentArrOverrides)
-        }
-        valueLanguagesOverrites = []
-    })
-    const differentArr = languages.filter(x => !valueLanguages.includes(x))
-    if(differentArr[0]){
-    console.log("    Code: ",("\x1b[31m" + value.code + "\x1b[0m")," is missing the following languages: ", differentArr)
+const report = (data: Message[], languages: string[]) => {
+  data.forEach((value) => {
+    let valueLanguages: string[] = [];
+    let valueLanguagesOverrites: string[] = [];
+    value.tr.forEach((i) => {
+      valueLanguages.push(i.l);
+    });
+    value.overrides?.forEach((i) => {
+      i.tr.forEach((value) => {
+        valueLanguagesOverrites.push(value.l);
+      });
+      const differentArrOverrides = languages.filter((x) => !valueLanguagesOverrites.includes(x));
+      if (differentArrOverrides[0]) {
+        console.log(
+          "    Code: ",
+          "\x1b[31m" + value.code + "\x1b[0m",
+          " Customer: ",
+          "\x1b[31m" + i.customer + "\x1b[0m",
+          " is missing the following languages: ",
+          differentArrOverrides
+        );
+      }
+      valueLanguagesOverrites = [];
+    });
+    const differentArr = languages.filter((x) => !valueLanguages.includes(x));
+    if (differentArr[0]) {
+      console.log(
+        "    Code: ",
+        "\x1b[31m" + value.code + "\x1b[0m",
+        " is missing the following languages: ",
+        differentArr
+      );
     }
+  });
+};
 
-  })
-}
+const getAllLanguagesUnique = (languages: string[]) => {
+  return languages.filter((value, index) => languages.indexOf(value) === index);
+};
 
-const getAllLanguagesUnique = (languages: string[])=>{
-  return languages.filter((value, index)=>languages.indexOf(value)===index)
-}
+const multiFileReport = (languages: string[], namespaces: MessagesNamespace[]) => {
+  console.log();
+  console.log("-------REPORT-------");
+  const uniqueLang = getAllLanguagesUnique(languages);
+  for (const [, messages] of namespaces) {
+    report(messages, uniqueLang);
+  }
+  console.log("All languages: ", uniqueLang);
+};
 
-const multiFileReport = (languages:string[], namespaces:MessagesNamespace[])=>{
-  console.log()
-  console.log("-------REPORT-------")
-    const uniqueLang = getAllLanguagesUnique(languages)
-    for (const [,messages] of namespaces) {
-      report(messages,uniqueLang)
-    }
-    console.log("All languages: ", uniqueLang)
-}
-
-const singleFileReport = (message:Message[],languages:string[])=>{
-  console.log()
-  console.log("-----REPORT-------")
-    const uniqueLang = getAllLanguagesUnique(languages)
-      report(message,uniqueLang)
-    console.log("All languages: ", uniqueLang)
-}
+const singleFileReport = (message: Message[], languages: string[]) => {
+  console.log();
+  console.log("-----REPORT-------");
+  const uniqueLang = getAllLanguagesUnique(languages);
+  report(message, uniqueLang);
+  console.log("All languages: ", uniqueLang);
+};
 
 const checkNamespaces = () => {
   fs.mkdirSync(outTempDir, { recursive: true });
@@ -245,21 +256,19 @@ const checkNamespaces = () => {
   fs.mkdirSync(outTsDir, { recursive: true });
 
   const namespaces: MessagesNamespace[] = mal.namespaces ? Object.entries(mal.namespaces) : [];
-  const languages: string[] = []
+  const languages: string[] = [];
   if (namespaces.length > 0) {
     for (const [ns, messages] of namespaces) {
-      allLanguagesReport(messages,languages)
+      allLanguagesReport(messages, languages);
       splitMessages(messages, ns);
     }
-    multiFileReport(languages,namespaces)
+    multiFileReport(languages, namespaces);
     writeNamespacesFile(namespaces);
   } else {
-    allLanguagesReport(mal.messages,languages)
+    allLanguagesReport(mal.messages, languages);
     splitMessages(mal.messages);
-    singleFileReport(mal.messages, languages)
+    singleFileReport(mal.messages, languages);
   }
-
-  
 };
 
 // main
