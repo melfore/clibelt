@@ -205,13 +205,13 @@ const report = (data: Message[], languages:string[])=>{
       })
       const differentArrOverrides = languages.filter(x => !valueLanguagesOverrites.includes(x))
       if(differentArrOverrides[0]){
-        console.log("Customer: ",("\x1b[31m" + value.code + "\x1b[0m")," is missing the following languages: ", differentArrOverrides)
+        console.log("    Code: ",("\x1b[31m" + value.code + "\x1b[0m")," Customer: ",("\x1b[31m" + i.customer + "\x1b[0m")," is missing the following languages: ", differentArrOverrides)
         }
         valueLanguagesOverrites = []
     })
     const differentArr = languages.filter(x => !valueLanguages.includes(x))
     if(differentArr[0]){
-    console.log("Code: ",("\x1b[31m" + value.code + "\x1b[0m")," is missing the following languages: ", differentArr)
+    console.log("    Code: ",("\x1b[31m" + value.code + "\x1b[0m")," is missing the following languages: ", differentArr)
     }
 
   })
@@ -222,6 +222,7 @@ const getAllLanguagesUnique = (languages: string[])=>{
 }
 
 const multiFileReport = (languages:string[], namespaces:MessagesNamespace[])=>{
+  console.log()
   console.log("-------REPORT-------")
     const uniqueLang = getAllLanguagesUnique(languages)
     for (const [,messages] of namespaces) {
@@ -231,6 +232,7 @@ const multiFileReport = (languages:string[], namespaces:MessagesNamespace[])=>{
 }
 
 const singleFileReport = (message:Message[],languages:string[])=>{
+  console.log()
   console.log("-----REPORT-------")
     const uniqueLang = getAllLanguagesUnique(languages)
       report(message,uniqueLang)
