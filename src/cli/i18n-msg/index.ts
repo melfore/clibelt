@@ -205,7 +205,7 @@ const report = (data: Message[], languages:string[])=>{
       })
       const differentArrOverrides = languages.filter(x => !valueLanguagesOverrites.includes(x))
       if(differentArrOverrides[0]){
-        console.log("Customer: ",("\x1b[31m" + i.customer + "\x1b[0m")," is missing the following languages: ", differentArrOverrides)
+        console.log("Customer: ",("\x1b[31m" + value.code + "\x1b[0m")," is missing the following languages: ", differentArrOverrides)
         }
         valueLanguagesOverrites = []
     })
