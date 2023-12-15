@@ -205,13 +205,13 @@ const report = (data: Message[], languages:string[])=>{
       })
       const differentArrOverrides = languages.filter(x => !valueLanguagesOverrites.includes(x))
       if(differentArrOverrides[0]){
-        console.log("Customer: ",("\x1b[31m" + i.customer + "\x1b[0m")," is missing the following languagues: ", differentArrOverrides)
+        console.log("Customer: ",("\x1b[31m" + i.customer + "\x1b[0m")," is missing the following languages: ", differentArrOverrides)
         }
         valueLanguagesOverrites = []
     })
     const differentArr = languages.filter(x => !valueLanguages.includes(x))
     if(differentArr[0]){
-    console.log("Code: ",("\x1b[31m" + value.code + "\x1b[0m")," is missing the following languagues: ", differentArr)
+    console.log("Code: ",("\x1b[31m" + value.code + "\x1b[0m")," is missing the following languages: ", differentArr)
     }
 
   })
