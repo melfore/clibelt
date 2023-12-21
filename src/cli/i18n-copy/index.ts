@@ -71,21 +71,24 @@ const langCopy = () => {
   const inputPath = path.join(process.cwd(), config.get("i18nMsg").input);
   const isDir = fs.lstatSync(inputPath).isDirectory();
 
-  if (from && to) {
-    if (isDir) {
-      fs.readdirSync(inputPath).map(async (fileName: any) => {
-        const filePath = path.join(inputPath, fileName);
-        checkFile(filePath, from, to);
-      });
-      console.log("Successfully copied");
-    } else {
-      checkFile(inputPath, from, to);
-      console.log("Successfully copied");
-    }
-  } else {
-    console.log("Missing params from and to");
+  if (!from || !to) {
+    console.error("Missing params from and to");
+    return 1;
   }
+
+  if (isDir) {
+    fs.readdirSync(inputPath).map(async (fileName: any) => {
+      const filePath = path.join(inputPath, fileName);
+      checkFile(filePath, from, to);
+    });
+    console.log("Successfully copied");
+  } else {
+    checkFile(inputPath, from, to);
+    console.log("Successfully copied");
+  }
+  return 0;
 };
 
 //Main
-langCopy();
+const res = langCopy();
+process.exit(res);
