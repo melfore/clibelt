@@ -17,8 +17,8 @@
     "i18n-copy": "dist/cli/i18n-copy/index.js"
   },
   "engines": {
-    "node": ">=18 <19",
-    "npm": ">=8 <10"
+    "node": ">=20 <21",
+    "npm": ">=8 <11"
   },
   "scripts": {
     "build2": "tsc -p .",
@@ -27,7 +27,7 @@
     "build:clean": "rm -r ./dist && npm run build",
     "copy:assets": "copyfiles --verbose ./src/**/*.{json,png,jpg,svg,xls,xlsx} ./dist/",
     "republish": "npm run build:clean && yalc push",
-    "test:i18n": "rm -f test/out/*.json test/out/*.ts && nodemon --watch 'src/**/*.ts' --watch '.clibelt.json' --exec 'ts-node' src/cli/i18n-msg/index.ts",
+    "test:i18n": "rm -f test/out/*.json test/out/*.ts && nodemon --exec 'ts-node' src/cli/i18n-msg/index.ts",
     "test": "jest --config jest.config.js --runInBand",
     "test:watch": "jest --config jest.config.js --watch --detectOpenHandles",
     "lintify": "eslint .",
@@ -41,24 +41,24 @@
     "convict": "^6.2.4",
     "convict-format-with-moment": "^6.2.0",
     "validator": "^13.11.0",
-    "prettier": "^3.0.3"
+    "prettier": "^3.1.1"
   },
   "devDependencies": {
-    "@types/convict": "^6.1.5",
-    "@types/jest": "^29.5.6",
-    "@types/node": "^20.8.7",
-    "@types/validator": "^13.11.5",
+    "@types/convict": "^6.1.6",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.10.5",
+    "@types/validator": "^13.11.7",
     "copyfiles": "^2.4.1",
-    "eslint": "^8.51.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-import": "^2.28.1",
-    "eslint-plugin-jest": "^27.4.2",
-    "eslint-plugin-prettier": "^5.0.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jest": "^27.6.0",
+    "eslint-plugin-prettier": "^5.1.0",
     "jest": "^29.7.0",
-    "nodemon": "^3.0.1",
+    "nodemon": "^3.0.2",
     "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   },
   "license": "MIT"
 }
