@@ -17,6 +17,7 @@ Add required CLIs to your `package.json`, for example:
 ```json
 "scripts": {
   "i18n": "i18n-msg",
+  "i18n:copy": "i18n-copy",
   "pwd2hash": "pwd2hash"
 }
 ```
@@ -34,7 +35,7 @@ Configuration example:
 ```json
 {
   "i18nMsg": {
-    "input": "./resources/messages-all-langs",
+    "input": "./resources/messages-all-langs.js",
     "outMsg": "./src/messages",
     "outTs": "./src/messages/i18nMessages.ts"
   }
@@ -81,7 +82,7 @@ Example:
 ```json
 {
   "i18nMsg": {
-    "input": "./resources/messages-all-langs",
+    "input": "./resources/messages-all-langs.js",
     "outMsg": "./src/messages",
     "outTs": "./src/messages/i18nMessages.ts"
   }
