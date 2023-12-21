@@ -5,7 +5,6 @@ import fs from "fs";
 import path from "path";
 import { EOL } from "os";
 import config from "../../config";
-import { emitWarning } from "process";
 
 export const CLI_NAME = "i18nMsg";
 

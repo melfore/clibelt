@@ -59,7 +59,7 @@ jobs:
           git commit -m "Release Ops" -a
 
       - name: Increase Version
-        run: npm version patch
+        run: npm version major
 
       - name: Push Updates
         uses: ad-m/github-push-action@master

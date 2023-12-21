@@ -13,7 +13,8 @@
   ],
   "bin": {
     "pwd2hash": "dist/cli/pwd2hash/index.js",
-    "i18n-msg": "dist/cli/i18n-msg/index.js"
+    "i18n-msg": "dist/cli/i18n-msg/index.js",
+    "i18n-copy": "dist/cli/i18n-copy/index.js"
   },
   "engines": {
     "node": ">=18 <19",
@@ -33,7 +34,8 @@
     "prettify": "prettier --write .",
     "preversion": "npm run lintify",
     "version": "npm run prettify",
-    "upload": "npm run build && npm publish --access public"
+    "upload": "npm run build && npm publish --access public",
+    "i18n:copy": "ts-node src/cli/i18n-copy/index.ts"
   },
   "dependencies": {
     "convict": "^6.2.4",
