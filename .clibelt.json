@@ -1,6 +1,6 @@
 {
   "i18nMsg": {
-    "input": "./test/resources/messages-all-langs",
+    "input": "./test/resources/messages-all-langs.js",
     "outMsg": "./test/out",
     "outTemp": "./test/out/temp",
     "outTs": "./test/out/i18nMessages.ts"
