@@ -192,6 +192,7 @@ const allLanguagesReport = (data: Message[], languages: string[]) => {
 };
 
 const report = (data: Message[], languages: string[]) => {
+  let e = 0;
   data.forEach((value) => {
     let valueLanguages: string[] = [];
     let valueLanguagesOverrites: string[] = [];
@@ -204,7 +205,7 @@ const report = (data: Message[], languages: string[]) => {
       });
       const differentArrOverrides = languages.filter((x) => !valueLanguagesOverrites.includes(x));
       if (differentArrOverrides[0]) {
-        console.log(
+        console.error(
           "    Code: ",
           "\x1b[31m" + value.code + "\x1b[0m",
           " Customer: ",
@@ -212,19 +213,22 @@ const report = (data: Message[], languages: string[]) => {
           " is missing the following languages: ",
           differentArrOverrides
         );
+        e = 1;
       }
       valueLanguagesOverrites = [];
     });
     const differentArr = languages.filter((x) => !valueLanguages.includes(x));
     if (differentArr[0]) {
-      console.log(
+      console.error(
         "    Code: ",
         "\x1b[31m" + value.code + "\x1b[0m",
         " is missing the following languages: ",
         differentArr
       );
+      e = 1;
     }
   });
+  return e;
 };
 
 const getAllLanguagesUnique = (languages: string[]) => {
@@ -235,18 +239,22 @@ const multiFileReport = (languages: string[], namespaces: MessagesNamespace[]) =
   console.log();
   console.log("-------REPORT-------");
   const uniqueLang = getAllLanguagesUnique(languages);
+  let numeError = 0;
   for (const [, messages] of namespaces) {
-    report(messages, uniqueLang);
+    const e = report(messages, uniqueLang);
+    numeError = numeError + e;
   }
   console.log("All languages: ", uniqueLang);
+  return numeError !== 0 ? 1 : 0;
 };
 
 const singleFileReport = (message: Message[], languages: string[]) => {
   console.log();
   console.log("-----REPORT-------");
   const uniqueLang = getAllLanguagesUnique(languages);
-  report(message, uniqueLang);
+  const e = report(message, uniqueLang);
   console.log("All languages: ", uniqueLang);
+  return e !== 0 ? 1 : 0;
 };
 
 const checkNamespaces = () => {
@@ -261,14 +269,17 @@ const checkNamespaces = () => {
       allLanguagesReport(messages, languages);
       splitMessages(messages, ns);
     }
-    multiFileReport(languages, namespaces);
+    const e = multiFileReport(languages, namespaces);
     writeNamespacesFile(namespaces);
+    return e;
   } else {
     allLanguagesReport(mal.messages, languages);
     splitMessages(mal.messages);
-    singleFileReport(mal.messages, languages);
+    const e = singleFileReport(mal.messages, languages);
+    return e;
   }
 };
 
 // main
-checkNamespaces();
+const res = checkNamespaces();
+process.exit(res);
