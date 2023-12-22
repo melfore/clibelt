@@ -1,5 +1,5 @@
 const fs = require("fs");
-import config from "../../config";
+import config, { commandConfig } from "../../config";
 import path from "path";
 import * as prettier from "prettier";
 
@@ -59,36 +59,39 @@ const checkFile = async (inputPath: string, from: string, to: string) => {
 
     return messages;
   });
-
   const writeContent = "exports.messages = " + JSON.stringify(newContent);
   const prettierContent = await prettier.format(writeContent, { parser: "babel" });
   fs.writeFileSync(inputPath, prettierContent, "utf-8");
 };
 
-const langCopy = () => {
-  const from = process.env.npm_config_from;
-  const to = process.env.npm_config_to;
-  const inputPath = path.join(process.cwd(), config.get("i18nMsg").input);
-  const isDir = fs.lstatSync(inputPath).isDirectory();
+const langCopy = async () => {
+  const from = commandConfig.get("line").from;
+  const to = commandConfig.get("line").to;
 
   if (!from || !to) {
-    console.error("Missing params from and to");
+    console.error("Missing params from/to");
     return 1;
   }
 
+  const inputPath = path.join(process.cwd(), config.get("i18nMsg").input);
+  const isDir = fs.lstatSync(inputPath).isDirectory();
+
   if (isDir) {
     fs.readdirSync(inputPath).map(async (fileName: any) => {
-      const filePath = path.join(inputPath, fileName);
-      checkFile(filePath, from, to);
+      if (fileName !== "index.js") {
+        const filePath = path.join(inputPath, fileName);
+        await checkFile(filePath, from, to);
+      }
     });
     console.log("Successfully copied");
   } else {
-    checkFile(inputPath, from, to);
+    await checkFile(inputPath, from, to);
     console.log("Successfully copied");
   }
   return 0;
 };
 
 //Main
-const res = langCopy();
-process.exit(res);
+langCopy().then((res) => {
+  process.exit(res);
+});

@@ -17,7 +17,7 @@ Add required CLIs to your `package.json`, for example:
 ```json
 "scripts": {
   "i18n": "i18n-msg",
-  "i18n:copy": "i18n-copy",
+  "i18n:copy": "i18n-copy --from it --to fr",
   "pwd2hash": "pwd2hash"
 }
 ```
@@ -48,8 +48,7 @@ Add arguments to script in `package.json`, for example:
 
 ```json
 "scripts": {
-  "i18n": "i18n-msg --input new/path --outTs new/constants.ts",
-  "i18n:copy": "i18n-copy --from=it --to=fr",
+  "i18n": "i18n-msg --input new/path --outTs new/constants.ts"
 }
 ```
 
