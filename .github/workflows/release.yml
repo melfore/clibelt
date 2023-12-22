@@ -19,7 +19,7 @@ jobs:
       - name: Install NodeJS
         uses: actions/setup-node@master
         with:
-          node-version: 18
+          node-version: 20
           registry-url: https://registry.npmjs.org/
 
       - name: Cache Dependencies
@@ -59,7 +59,7 @@ jobs:
           git commit -m "Release Ops" -a
 
       - name: Increase Version
-        run: npm version major
+        run: npm version patch
 
       - name: Push Updates
         uses: ad-m/github-push-action@master
