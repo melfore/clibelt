@@ -14,7 +14,7 @@ import path from "path";
 import convict, { ValidateOptions } from "convict";
 
 import schema from "./config-schema";
-import commandSchema from "./commandLine-schema";
+import copySchema from "./config-copy-schema";
 import validators from "./config-validators";
 const convict_format_with_moment = require("convict-format-with-moment");
 
@@ -24,16 +24,17 @@ const VALIDATE_WARN: ValidateOptions = { allowed: "warn" };
 // Any properties specified in config files that are not declared in the schema will throw errors.
 // This is to ensure that the schema and the config files are in sync
 const VALIDATE_ERROR: ValidateOptions = { allowed: "strict" };
-
 convict.addFormats(validators);
 convict.addFormats(convict_format_with_moment);
 
 const config = convict(schema);
-const commandConfig = convict(commandSchema);
+const configCopy = convict(copySchema);
 
 const pathName = path.join(process.cwd(), ".clibelt.json");
 config.loadFile(pathName);
 config.validate(VALIDATE_WARN);
+configCopy.loadFile(pathName);
+//configCopy.validate(VALIDATE_WARN);
 
 // Example:
 //    const input = get(CLI_NAME)("input");
@@ -41,5 +42,5 @@ config.validate(VALIDATE_WARN);
 
 // export default { ...config, getProp };
 
-export { config, commandConfig };
+export { config, configCopy };
 export default config;

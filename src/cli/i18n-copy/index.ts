@@ -1,5 +1,5 @@
 const fs = require("fs");
-import config, { commandConfig } from "../../config";
+import { configCopy } from "../../config";
 import path from "path";
 import * as prettier from "prettier";
 
@@ -34,7 +34,9 @@ const checkFile = async (inputPath: string, from: string, to: string) => {
         existLang = true;
       }
     });
-
+    if (!addValue) {
+      throw new Error("--from " + from + " not exist");
+    }
     if (!existLang) {
       messages.tr.push({ l: to, v: addValue });
     }
@@ -51,6 +53,11 @@ const checkFile = async (inputPath: string, from: string, to: string) => {
             existOverridesLang = true;
           }
         });
+
+        if (!addOverrideValue) {
+          throw new Error("--from " + from + " not exist");
+        }
+
         if (!existOverridesLang) {
           messages.overrides![index].tr.push({ l: to, v: addOverrideValue });
         }
@@ -65,30 +72,34 @@ const checkFile = async (inputPath: string, from: string, to: string) => {
 };
 
 const langCopy = async () => {
-  const from = commandConfig.get("line").from;
-  const to = commandConfig.get("line").to;
+  try {
+    const from = configCopy.get("i18nCopy").from;
+    const to = configCopy.get("i18nCopy").to;
+    const inputPath = path.join(process.cwd(), configCopy.get("i18nMsg").input);
+    const isDir = fs.lstatSync(inputPath).isDirectory();
 
-  if (!from || !to) {
-    console.error("Missing params from/to");
+    if (!from || !to) {
+      console.error("Missing from/to Param");
+      return 1;
+    }
+
+    if (isDir) {
+      fs.readdirSync(inputPath).map(async (fileName: any) => {
+        if (fileName !== "index.js") {
+          const filePath = path.join(inputPath, fileName);
+          await checkFile(filePath, from, to);
+        }
+      });
+      console.log("Successfully copied");
+    } else {
+      await checkFile(inputPath, from, to);
+      console.log("Successfully copied");
+    }
+    return 0;
+  } catch (e) {
+    console.error(e);
     return 1;
   }
-
-  const inputPath = path.join(process.cwd(), config.get("i18nMsg").input);
-  const isDir = fs.lstatSync(inputPath).isDirectory();
-
-  if (isDir) {
-    fs.readdirSync(inputPath).map(async (fileName: any) => {
-      if (fileName !== "index.js") {
-        const filePath = path.join(inputPath, fileName);
-        await checkFile(filePath, from, to);
-      }
-    });
-    console.log("Successfully copied");
-  } else {
-    await checkFile(inputPath, from, to);
-    console.log("Successfully copied");
-  }
-  return 0;
 };
 
 //Main

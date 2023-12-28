@@ -191,11 +191,18 @@ const allLanguagesReport = (data: Message[], languages: string[]) => {
   });
 };
 
-const report = (data: Message[], languages: string[]) => {
+const report = (data: Message[], languages: string[], uniqueCode: string[]) => {
   let e = 0;
   data.forEach((value) => {
     let valueLanguages: string[] = [];
     let valueLanguagesOverrites: string[] = [];
+    const isUniqueCode = uniqueCode.includes(value.code);
+    if (!isUniqueCode) {
+      uniqueCode.push(value.code);
+    } else {
+      console.log("\x1b[31m Duplicate Code: \x1b[0m", value.code);
+      e = 1;
+    }
     value.tr.forEach((i) => {
       valueLanguages.push(i.l);
     });
@@ -240,8 +247,9 @@ const multiFileReport = (languages: string[], namespaces: MessagesNamespace[]) =
   console.log("-------REPORT-------");
   const uniqueLang = getAllLanguagesUnique(languages);
   let numeError = 0;
+  const uniqueCode: string[] = [];
   for (const [, messages] of namespaces) {
-    const e = report(messages, uniqueLang);
+    const e = report(messages, uniqueLang, uniqueCode);
     numeError = numeError + e;
   }
   console.log("All languages: ", uniqueLang);
@@ -249,10 +257,11 @@ const multiFileReport = (languages: string[], namespaces: MessagesNamespace[]) =
 };
 
 const singleFileReport = (message: Message[], languages: string[]) => {
+  const uniqueCode: string[] = [];
   console.log();
   console.log("-----REPORT-------");
   const uniqueLang = getAllLanguagesUnique(languages);
-  const e = report(message, uniqueLang);
+  const e = report(message, uniqueLang, uniqueCode);
   console.log("All languages: ", uniqueLang);
   return e !== 0 ? 1 : 0;
 };
