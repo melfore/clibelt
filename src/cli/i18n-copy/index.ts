@@ -1,5 +1,5 @@
 const fs = require("fs");
-import { configCopy } from "../../config";
+import config from "../../config";
 import path from "path";
 import * as prettier from "prettier";
 
@@ -73,9 +73,9 @@ const checkFile = async (inputPath: string, from: string, to: string) => {
 
 const langCopy = async () => {
   try {
-    const from = configCopy.get("i18nCopy").from;
-    const to = configCopy.get("i18nCopy").to;
-    const inputPath = path.join(process.cwd(), configCopy.get("i18nMsg").input);
+    const from = config.get("i18nMsg").from;
+    const to = config.get("i18nMsg").to;
+    const inputPath = path.join(process.cwd(), config.get("i18nMsg").input);
     const isDir = fs.lstatSync(inputPath).isDirectory();
 
     if (!from || !to) {

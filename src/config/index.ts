@@ -14,7 +14,6 @@ import path from "path";
 import convict, { ValidateOptions } from "convict";
 
 import schema from "./config-schema";
-import copySchema from "./config-copy-schema";
 import validators from "./config-validators";
 const convict_format_with_moment = require("convict-format-with-moment");
 
@@ -28,13 +27,10 @@ convict.addFormats(validators);
 convict.addFormats(convict_format_with_moment);
 
 const config = convict(schema);
-const configCopy = convict(copySchema);
 
 const pathName = path.join(process.cwd(), ".clibelt.json");
 config.loadFile(pathName);
 config.validate(VALIDATE_WARN);
-configCopy.loadFile(pathName);
-//configCopy.validate(VALIDATE_WARN);
 
 // Example:
 //    const input = get(CLI_NAME)("input");
@@ -42,5 +38,5 @@ configCopy.loadFile(pathName);
 
 // export default { ...config, getProp };
 
-export { config, configCopy };
+export { config };
 export default config;

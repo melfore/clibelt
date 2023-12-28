@@ -78,9 +78,7 @@ export const countryCode = {
   name: "countryCode",
   coerce: (v: any) => v.toString(), // WARN seems to be not working
   validate: (x: any) => {
-    if (x) {
-      assert(isISO31661Alpha2(x?.toString()), "must be a valid country code");
-    }
+    assert(isISO31661Alpha2(x?.toString()), "must be a valid country code");
   },
 };
 

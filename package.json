@@ -35,7 +35,7 @@
     "preversion": "npm run lintify",
     "version": "npm run prettify",
     "upload": "npm run build && npm publish --access public",
-    "i18n:copy": "ts-node src/cli/i18n-copy/index.ts --from it --to pl"
+    "i18n:copy": "ts-node src/cli/i18n-copy/index.ts --from it --to fr"
   },
   "dependencies": {
     "convict": "^6.2.4",
