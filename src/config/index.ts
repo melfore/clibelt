@@ -23,7 +23,6 @@ const VALIDATE_WARN: ValidateOptions = { allowed: "warn" };
 // Any properties specified in config files that are not declared in the schema will throw errors.
 // This is to ensure that the schema and the config files are in sync
 const VALIDATE_ERROR: ValidateOptions = { allowed: "strict" };
-
 convict.addFormats(validators);
 convict.addFormats(convict_format_with_moment);
 

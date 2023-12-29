@@ -28,5 +28,15 @@ export default {
       arg: "i18n-out-ts",
       env: "I18N_OUT_TS",
     },
+    from: {
+      format: "countryCode",
+      default: undefined,
+      arg: "from",
+    },
+    to: {
+      format: "countryCode",
+      default: undefined,
+      arg: "to",
+    },
   },
 };
