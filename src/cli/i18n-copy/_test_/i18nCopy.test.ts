@@ -1,6 +1,6 @@
-import { checkSingleFile } from "./utils";
+import { checkSingleFile } from "../utils";
 
-import result from "./copy-test/testFileResult.js";
+import result from "./testFileResult.js";
 import path from "node:path";
 
 describe("Copy-Test", () => {
