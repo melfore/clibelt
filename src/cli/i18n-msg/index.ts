@@ -191,12 +191,13 @@ const allLanguagesReport = (data: Message[], languages: string[]) => {
   });
 };
 
-const report = (data: Message[], languages: string[], uniqueCode: string[]) => {
+const report = (data: Message[], languages: string[], uniqueCode: string[], uniqueOverrides: string[]) => {
   let e = 0;
   data.forEach((value) => {
     let valueLanguages: string[] = [];
     let valueLanguagesOverrites: string[] = [];
     const isUniqueCode = uniqueCode.includes(value.code);
+    //check duplicate Code
     if (!isUniqueCode) {
       uniqueCode.push(value.code);
     } else {
@@ -204,11 +205,34 @@ const report = (data: Message[], languages: string[], uniqueCode: string[]) => {
       e = 1;
     }
     value.tr.forEach((i) => {
-      valueLanguages.push(i.l);
+      //check duplicate language
+      const isUniqueLang = valueLanguages.includes(i.l);
+      if (!isUniqueLang) {
+        valueLanguages.push(i.l);
+      } else {
+        console.log("\x1b[31m Duplicate language: \x1b[0m", i.l, "\x1b[31m in Code: \x1b[0m", value.code);
+        e = 1;
+      }
     });
     value.overrides?.forEach((i) => {
+      //check duplicate Ovverides
+      const isUniqueOverrides = uniqueOverrides.includes(i.customer);
+      if (!isUniqueOverrides) {
+        uniqueOverrides.push(i.customer);
+      } else {
+        console.log("\x1b[31m Duplicate Customer: \x1b[0m", i.customer);
+        e = 1;
+      }
+
       i.tr.forEach((value) => {
-        valueLanguagesOverrites.push(value.l);
+        //check duplicate language in Ovverides
+        const isUniqueOverridesLang = valueLanguagesOverrites.includes(value.l);
+        if (!isUniqueOverridesLang) {
+          valueLanguagesOverrites.push(value.l);
+        } else {
+          console.log("\x1b[31m Duplicate language: \x1b[0m", value.l, "\x1b[31m in Customer: \x1b[0m", i.customer);
+          e = 1;
+        }
       });
       const differentArrOverrides = languages.filter((x) => !valueLanguagesOverrites.includes(x));
       if (differentArrOverrides[0]) {
@@ -248,8 +272,9 @@ const multiFileReport = (languages: string[], namespaces: MessagesNamespace[]) =
   const uniqueLang = getAllLanguagesUnique(languages);
   let numeError = 0;
   const uniqueCode: string[] = [];
+  const uniqueOverrides: string[] = [];
   for (const [, messages] of namespaces) {
-    const e = report(messages, uniqueLang, uniqueCode);
+    const e = report(messages, uniqueLang, uniqueCode, uniqueOverrides);
     numeError = numeError + e;
   }
   console.log("All languages: ", uniqueLang);
@@ -258,10 +283,11 @@ const multiFileReport = (languages: string[], namespaces: MessagesNamespace[]) =
 
 const singleFileReport = (message: Message[], languages: string[]) => {
   const uniqueCode: string[] = [];
+  const uniqueOverrides: string[] = [];
   console.log();
   console.log("-----REPORT-------");
   const uniqueLang = getAllLanguagesUnique(languages);
-  const e = report(message, uniqueLang, uniqueCode);
+  const e = report(message, uniqueLang, uniqueCode, uniqueOverrides);
   console.log("All languages: ", uniqueLang);
   return e !== 0 ? 1 : 0;
 };

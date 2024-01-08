@@ -17,6 +17,7 @@ exports.messages = [
     tr: [
       { l: "en", v: "Sorry, the request is wrong (400)" },
       { l: "it", v: "Siamo spiacenti, la richiesta è errata (400)" },
+      { l: "it", v: "Siamo spiacenti, la richiesta è errata (400)" },
     ],
     overrides: [
       {
@@ -25,6 +26,10 @@ exports.messages = [
           {
             l: "en",
             v: "Access denied C1",
+          },
+          {
+            l: "it",
+            v: "Accesso negato C1",
           },
           {
             l: "it",
@@ -42,6 +47,19 @@ exports.messages = [
           {
             l: "it",
             v: "Accesso negato C2",
+          },
+        ],
+      },
+      {
+        customer: "c1",
+        tr: [
+          {
+            l: "en",
+            v: "Access denied C1",
+          },
+          {
+            l: "it",
+            v: "Accesso negato C1",
           },
         ],
       },
@@ -293,6 +311,19 @@ exports.messages = [
     tr: [
       { l: "en", v: "Username" },
       { l: "it", v: "Nome utente" },
+    ],
+  },
+  {
+    code: "error.code.login.failed",
+    tr: [
+      {
+        l: "en",
+        v: "Access denied. Please check your credentials and retry",
+      },
+      {
+        l: "it",
+        v: "Accesso negato. Controllare le credenziali e riprovare",
+      },
     ],
   },
 ];

@@ -1,4 +1,4 @@
-const fs = require("fs");
+import fs from "fs";
 import * as prettier from "prettier";
 
 interface Translation {
@@ -66,6 +66,7 @@ export const checkSingleFile = async (inputPath: string, from: string, to: strin
   const writeContent = "exports.messages = " + JSON.stringify(newContent);
   const prettierContent = await prettier.format(writeContent, { parser: "babel" });
   fs.writeFileSync(inputPath, prettierContent, "utf-8");
+  return newContent;
 };
 
 export const checkMultipleFile = async (inputPath: string, from: string, to: string) => {
