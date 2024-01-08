@@ -1,4 +1,4 @@
-import { passwordHash } from "./pwd2hash";
+import { passwordHash } from "../pwd2hash";
 
 describe("verify password hash", () => {
   it("returns md5 hex value of password in case of password hash is running well", () => {
