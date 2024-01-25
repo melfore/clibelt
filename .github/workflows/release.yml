@@ -70,3 +70,11 @@ jobs:
         run: npm run upload
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Send Notification
+        uses: Co-qn/google-chat-notification@master
+        with:
+          name: Mosaic CI - Release
+          url: ${{ secrets.GOOGLE_CHAT }}
+          status: ${{ job.status }}
+        if: always()
