@@ -28,7 +28,7 @@
     "copy:assets": "copyfiles --verbose ./src/**/*.{json,png,jpg,svg,xls,xlsx} ./dist/",
     "republish": "npm run build:clean && yalc push",
     "test:i18n": "rm -f test/out/*.json test/out/*.ts && nodemon --exec 'ts-node' src/cli/i18n-msg/index.ts",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js --runInBand",
     "test:watch": "jest --config jest.config.js --watch --detectOpenHandles",
     "lintify": "eslint .",
     "prettify": "prettier --write .",
