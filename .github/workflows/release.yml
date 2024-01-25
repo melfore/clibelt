@@ -74,7 +74,7 @@ jobs:
       - name: Send Notification
         uses: Co-qn/google-chat-notification@master
         with:
-          name: Mosaic CI - Release
+          name: Clibelt - Release
           url: ${{ secrets.GOOGLE_CHAT }}
           status: ${{ job.status }}
         if: always()
