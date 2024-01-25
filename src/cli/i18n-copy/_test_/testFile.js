@@ -4,6 +4,7 @@ exports.messages = [
     tr: [
       { l: "en", v: "Access denied. Please check your credentials and retry" },
       { l: "it", v: "Accesso negato. Controllare le credenziali e riprovare" },
+      { l: "pl", v: "Accesso negato. Controllare le credenziali e riprovare" },
     ],
   },
   {
@@ -11,6 +12,7 @@ exports.messages = [
     tr: [
       { l: "en", v: "Sorry, the request is wrong (400)" },
       { l: "it", v: "Siamo spiacenti, la richiesta è errata (400)" },
+      { l: "pl", v: "Siamo spiacenti, la richiesta è errata (400)" },
     ],
     overrides: [
       {
@@ -18,6 +20,7 @@ exports.messages = [
         tr: [
           { l: "en", v: "Access denied C1" },
           { l: "it", v: "Accesso negato C1" },
+          { l: "pl", v: "Accesso negato C1" },
         ],
       },
       {
@@ -25,6 +28,7 @@ exports.messages = [
         tr: [
           { l: "en", v: "Access denied C2" },
           { l: "it", v: "Accesso negato C2" },
+          { l: "pl", v: "Accesso negato C2" },
         ],
       },
       {
@@ -32,6 +36,7 @@ exports.messages = [
         tr: [
           { l: "en", v: "Access denied C1" },
           { l: "it", v: "Accesso negato C1" },
+          { l: "pl", v: "Accesso negato C1" },
         ],
       },
     ],
@@ -41,6 +46,7 @@ exports.messages = [
     tr: [
       { l: "en", v: "Generic comunication error" },
       { l: "it", v: "Errore di comunicazione generica" },
+      { l: "pl", v: "Errore di comunicazione generica" },
     ],
   },
 ];
