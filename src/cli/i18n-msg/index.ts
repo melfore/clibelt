@@ -190,11 +190,12 @@ const allLanguagesReport = (data: Message[], languages: string[]) => {
   });
 };
 
-const report = (data: Message[], languages: string[], uniqueCode: string[], uniqueOverrides: string[]) => {
+const report = (data: Message[], languages: string[], uniqueCode: string[]) => {
   let e = 0;
   data.forEach((value) => {
     let valueLanguages: string[] = [];
     let valueLanguagesOverrites: string[] = [];
+    let uniqueOverrides: string[] = [];
     const isUniqueCode = uniqueCode.includes(value.code);
     //check duplicate Code
     if (!isUniqueCode) {
@@ -219,7 +220,7 @@ const report = (data: Message[], languages: string[], uniqueCode: string[], uniq
       if (!isUniqueOverrides) {
         uniqueOverrides.push(i.customer);
       } else {
-        console.log("\x1b[31m Duplicate Customer: \x1b[0m", i.customer);
+        console.log("\x1b[31m Duplicate Customer: \x1b[0m", i.customer, "\x1b[31m in Code: \x1b[0m", value.code);
         e = 1;
       }
 
@@ -271,9 +272,8 @@ const multiFileReport = (languages: string[], namespaces: MessagesNamespace[]) =
   const uniqueLang = getAllLanguagesUnique(languages);
   let numeError = 0;
   const uniqueCode: string[] = [];
-  const uniqueOverrides: string[] = [];
   for (const [, messages] of namespaces) {
-    const e = report(messages, uniqueLang, uniqueCode, uniqueOverrides);
+    const e = report(messages, uniqueLang, uniqueCode);
     numeError = numeError + e;
   }
   console.log("All languages: ", uniqueLang);
@@ -282,11 +282,10 @@ const multiFileReport = (languages: string[], namespaces: MessagesNamespace[]) =
 
 const singleFileReport = (message: Message[], languages: string[]) => {
   const uniqueCode: string[] = [];
-  const uniqueOverrides: string[] = [];
   console.log();
   console.log("-----REPORT-------");
   const uniqueLang = getAllLanguagesUnique(languages);
-  const e = report(message, uniqueLang, uniqueCode, uniqueOverrides);
+  const e = report(message, uniqueLang, uniqueCode);
   console.log("All languages: ", uniqueLang);
   return e !== 0 ? 1 : 0;
 };
