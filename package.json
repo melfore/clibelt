@@ -21,6 +21,7 @@
     "npm": ">=8 <11"
   },
   "scripts": {
+    "commit": "npx git-cz",
     "build2": "tsc -p .",
     "build": "npm run prettify && tsc -p . && npm run copy:assets",
     "build:watch": "npm run copy:assets && tsc -p . --watch",
@@ -45,6 +46,8 @@
     "validator": "^13.11.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.7.1",
+    "@commitlint/config-conventional": "^19.7.1",
     "@types/convict": "^6.1.6",
     "@types/jest": "^29.5.11",
     "@types/node": "^20.10.5",
