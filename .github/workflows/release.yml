@@ -56,7 +56,7 @@ jobs:
         if: steps.run-prettier.outputs.changed-files > 0
         run: |
           git add .
-          git commit -m "Release Ops" -a
+          git commit -m "refactor" -a
 
       - name: Increase Version
         run: npm version patch
