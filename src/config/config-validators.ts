@@ -18,7 +18,7 @@ import isIP from "validator/lib/isIP";
 import isURL from "validator/lib/isURL";
 import isBoolan from "validator/lib/isBoolean";
 import isInt from "validator/lib/isInt";
-import isISO31661Alpha2 from "validator/lib/isISO31661Alpha2";
+import isISO6391 from "validator/lib/isISO6391";
 
 const assert = (assertion: boolean, err_msg: string) => {
   if (!assertion) {
@@ -78,7 +78,7 @@ export const countryCode = {
   name: "countryCode",
   coerce: (v: any) => v.toString(), // WARN seems to be not working
   validate: (x: any) => {
-    assert(isISO31661Alpha2(x?.toString()), "must be a valid country code");
+    assert(isISO6391(x?.toString()), "must be a valid country code");
   },
 };
 
