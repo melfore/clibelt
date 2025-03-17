@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest";
+
 import { passwordHash } from "../pwd2hash";
 
 describe("verify password hash", () => {
